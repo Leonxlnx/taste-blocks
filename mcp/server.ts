@@ -8,6 +8,7 @@ import * as z from "zod/v4";
 
 const REGISTRY_URL = "https://tasteblocks.dev/r/registry.json";
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const MAX_REGISTRY_ITEM_BYTES = 512_000;
 const NAME = z.string().min(1).max(80).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const HASH = z.string().regex(/^sha256:[a-f0-9]{64}$/);
 const HTTPS_URL = z.string().max(2_048).url().refine((value) => value.startsWith("https://"));
@@ -206,6 +207,26 @@ export async function loadCatalog(): Promise<CatalogComponent[]> {
   }
 }
 
+async function loadRegistryItem(name: string) {
+  const itemPath = path.join(PROJECT_ROOT, "public", "r", `${name}.json`);
+  let source: string;
+  try {
+    source = await readFile(itemPath, "utf8");
+  } catch {
+    throw new McpError(ErrorCode.InvalidParams, "Component registry item not found");
+  }
+  if (Buffer.byteLength(source, "utf8") > MAX_REGISTRY_ITEM_BYTES) {
+    throw new McpError(ErrorCode.InternalError, "Component registry item exceeds the response limit");
+  }
+  try {
+    const item = JSON.parse(source) as { name?: unknown; type?: unknown; files?: unknown };
+    if (item.name !== name || item.type !== "registry:component" || !Array.isArray(item.files)) throw new Error();
+  } catch {
+    throw new McpError(ErrorCode.InternalError, "Invalid generated component registry item");
+  }
+  return source;
+}
+
 function textResult<T extends Record<string, unknown>>(structuredContent: T) {
   return {
     content: [{ type: "text" as const, text: JSON.stringify(structuredContent) }],
@@ -365,6 +386,23 @@ export function createTasteBlocksServer(components: CatalogComponent[]) {
       if (!component) throw new McpError(ErrorCode.InvalidParams, "Component resource not found");
       return {
         contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(componentDetail(component)) }],
+      };
+    },
+  );
+
+  server.registerResource(
+    "registry-item",
+    new ResourceTemplate("tasteblocks://registry/{name}", { list: undefined }),
+    {
+      title: "Taste Blocks distributable registry item",
+      description: "Generated public shadcn registry payload for one verified component.",
+      mimeType: "application/json",
+    },
+    async (uri, variables) => {
+      const name = Array.isArray(variables.name) ? variables.name[0] : variables.name;
+      if (!name || !byName.has(name)) throw new McpError(ErrorCode.InvalidParams, "Component registry item not found");
+      return {
+        contents: [{ uri: uri.href, mimeType: "application/json", text: await loadRegistryItem(name) }],
       };
     },
   );

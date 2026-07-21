@@ -7,7 +7,7 @@ import test from "node:test";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { getDefaultEnvironment, StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
-import { parseCatalog } from "./server";
+import { loadCatalog, parseCatalog } from "./server";
 
 const sha256 = (character: string) => `sha256:${character.repeat(64)}`;
 
@@ -162,6 +162,7 @@ test("Taste Blocks stdio MCP exposes only the read-only component contract", { t
     const templates = await client.listResourceTemplates();
     assert.deepEqual(templates.resourceTemplates.map((template) => template.uriTemplate), [
       "tasteblocks://components/{name}",
+      "tasteblocks://registry/{name}",
     ]);
 
     const summaryResult = await client.readResource({ uri: "tasteblocks://catalog" });
@@ -250,5 +251,36 @@ test("Taste Blocks stdio MCP exposes only the read-only component contract", { t
   } finally {
     await client.close();
     await rm(temporaryDirectory, { recursive: true, force: true });
+  }
+});
+
+test("Taste Blocks stdio MCP serves the real generated catalog and registry payload", { timeout: 20_000 }, async () => {
+  const catalog = await loadCatalog();
+  assert.ok(catalog.length >= 500);
+  const sample = catalog[0];
+  const transport = new StdioClientTransport({
+    command: process.execPath,
+    args: ["--import", "tsx", path.resolve("mcp/stdio.ts")],
+    cwd: process.cwd(),
+    env: getDefaultEnvironment(),
+    stderr: "pipe",
+  });
+  const client = new Client({ name: "taste-blocks-live-smoke", version: "0.1.0" }, { capabilities: {} });
+
+  try {
+    await client.connect(transport);
+    const search = await client.callTool({ name: "search_components", arguments: { query: sample.name } });
+    assert.notEqual(search.isError, true);
+    assert.equal((search.structuredContent as { matches: Array<{ name: string }> }).matches[0].name, sample.name);
+
+    const result = await client.readResource({ uri: `tasteblocks://registry/${sample.name}` });
+    const content = result.contents[0];
+    assert.ok("text" in content);
+    const item = JSON.parse(content.text) as { name: string; type: string; files: unknown[] };
+    assert.equal(item.name, sample.name);
+    assert.equal(item.type, "registry:component");
+    assert.ok(item.files.length > 0);
+  } finally {
+    await client.close();
   }
 });
