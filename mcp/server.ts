@@ -6,7 +6,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
 import * as z from "zod/v4";
 
-const REGISTRY_URL = "https://tasteblocks.dev/r/registry.json";
+const REGISTRY_URL = "https://leonxlnx.github.io/taste-blocks/r/registry.json";
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MAX_REGISTRY_ITEM_BYTES = 512_000;
 const NAME = z.string().min(1).max(80).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);

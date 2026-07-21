@@ -173,7 +173,7 @@ test("Taste Blocks stdio MCP exposes only the read-only component contract", { t
       verifiedCount: 2,
       categories: ["text-motion", "visual-effects"],
       sources: ["Example UI", "Magic UI"],
-      registryUrl: "https://tasteblocks.dev/r/registry.json",
+      registryUrl: "https://leonxlnx.github.io/taste-blocks/r/registry.json",
     });
 
     const detailResult = await client.readResource({ uri: "tasteblocks://components/line-shadow-text" });

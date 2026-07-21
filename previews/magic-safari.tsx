@@ -8,7 +8,7 @@ const previewImage =
 export default function MagicSafariPreview() {
   return (
     <figure className="w-full max-w-5xl">
-      <Safari url="tasteblocks.dev" imageSrc={previewImage} />
+      <Safari url="leonxlnx.github.io/taste-blocks" imageSrc={previewImage} />
       <figcaption className="sr-only">Safari browser mockup preview</figcaption>
     </figure>
   )

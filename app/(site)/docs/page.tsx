@@ -19,7 +19,7 @@ export default function DocsPage() {
             <pre className="overflow-x-auto border border-[var(--line)] bg-[var(--foreground)] p-5 text-sm [color:var(--background)]">
               <code>{`{
   "registries": {
-    "@taste": "https://tasteblocks.dev/r/{name}.json"
+    "@taste": "https://leonxlnx.github.io/taste-blocks/r/{name}.json"
   }
 }`}</code>
             </pre>
