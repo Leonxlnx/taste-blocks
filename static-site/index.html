@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="508 source-backed React components with verified licenses and installable registry payloads." />
+    <title>Taste Blocks</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="#top">Taste Blocks</a>
+      <nav aria-label="Primary navigation">
+        <a href="#components">Components</a>
+        <a href="#install">Install</a>
+        <a href="https://github.com/Leonxlnx/taste-blocks">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div>
+          <h1>Components with sources attached.</h1>
+          <p>Reviewed React source, exact provenance, and a working registry payload for every published component.</p>
+          <a class="primary-action" href="#components">Browse 508 components</a>
+        </div>
+        <div class="monogram" aria-hidden="true">TB</div>
+      </section>
+
+      <section class="catalog-section" id="components">
+        <div class="section-heading">
+          <h2>Components</h2>
+          <p id="catalog-status" role="status">Loading the verified catalog…</p>
+        </div>
+
+        <form class="filters" id="filters" role="search">
+          <label>
+            <span>Search</span>
+            <input id="query" type="search" placeholder="Name, source, category" autocomplete="off" />
+          </label>
+          <label>
+            <span>Category</span>
+            <select id="category"><option value="">All categories</option></select>
+          </label>
+          <label>
+            <span>Source</span>
+            <select id="source"><option value="">All sources</option></select>
+          </label>
+        </form>
+
+        <div class="catalog" id="catalog" aria-live="polite"></div>
+      </section>
+
+      <section class="install-section" id="install">
+        <div>
+          <h2>Install from the registry</h2>
+          <p>Open a component to copy its direct shadcn command. Every JSON payload is publicly reachable and contains the reviewed source files and dependencies.</p>
+        </div>
+        <code id="registry-url"></code>
+      </section>
+    </main>
+
+    <footer>
+      <span>Taste Blocks</span>
+      <a href="https://github.com/Leonxlnx/taste-blocks/blob/main/THIRD_PARTY_NOTICES.md">Licenses and notices</a>
+    </footer>
+
+    <dialog id="component-dialog" aria-labelledby="dialog-title">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Close">Close</button>
+      <p class="dialog-meta" id="dialog-meta"></p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-description"></p>
+      <div class="command-row">
+        <code id="dialog-command"></code>
+        <button id="copy-command" type="button">Copy</button>
+      </div>
+      <div class="dialog-links">
+        <a id="dialog-json" href="">Registry JSON</a>
+        <a id="dialog-source" href="">Upstream source</a>
+      </div>
+    </dialog>
+  </body>
+</html>

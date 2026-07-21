@@ -1,0 +1,111 @@
+:root {
+  --background: #f4f4f0;
+  --foreground: #171717;
+  --muted: #686863;
+  --line: #c9c9c2;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--background); color: var(--foreground); }
+body { min-width: 320px; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--background); }
+a { color: inherit; }
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+::selection { color: var(--background); background: var(--foreground); }
+:focus-visible { outline: 2px solid var(--foreground); outline-offset: 4px; }
+
+.site-header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--background) 95%, transparent);
+  backdrop-filter: blur(10px);
+}
+.site-header nav { display: flex; gap: 28px; white-space: nowrap; font-size: 14px; }
+.site-header nav a, .wordmark { text-decoration: none; }
+.site-header nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.wordmark { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
+
+main, footer { width: min(1600px, 100%); margin-inline: auto; }
+.hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  align-items: end;
+  gap: 56px;
+  padding: 128px 40px 40px;
+}
+.hero h1 { max-width: 15ch; margin: 0; font-size: clamp(3.5rem, 8vw, 8rem); line-height: 0.9; letter-spacing: -0.07em; }
+.hero p { max-width: 42ch; margin: 28px 0 0; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.45; }
+.primary-action { display: inline-flex; min-height: 48px; align-items: center; margin-top: 32px; padding: 0 20px; background: var(--foreground); color: var(--background); font-size: 14px; font-weight: 600; text-decoration: none; }
+.primary-action:active { transform: translateY(1px); }
+.monogram { justify-self: end; color: var(--line); font: 700 clamp(7rem, 19vw, 21rem)/0.72 ui-monospace, monospace; letter-spacing: -0.12em; }
+
+.catalog-section { padding: 112px 40px; border-top: 1px solid var(--line); }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.section-heading h2, .install-section h2 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -0.055em; }
+.section-heading p { margin: 0 0 8px; color: var(--muted); }
+.filters { display: grid; grid-template-columns: minmax(240px, 1fr) 240px 240px; border: 1px solid var(--line); }
+.filters label { display: grid; gap: 8px; padding: 14px 16px; border-right: 1px solid var(--line); }
+.filters label:last-child { border-right: 0; }
+.filters span { color: var(--muted); font-size: 12px; }
+.filters input, .filters select { width: 100%; min-height: 36px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--foreground); }
+.catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--line); }
+.component-card { min-height: 190px; display: flex; flex-direction: column; align-items: stretch; padding: 24px; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.component-card:hover { background: rgba(255, 255, 255, 0.48); }
+.component-card h3 { margin: 0; font-size: 20px; letter-spacing: -0.03em; }
+.component-card p { margin: 12px 0 24px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+.component-card span { margin-top: auto; color: var(--muted); font-size: 12px; }
+.empty { grid-column: 1 / -1; padding: 64px 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); }
+
+.install-section { display: grid; grid-template-columns: 1fr minmax(280px, 0.8fr); gap: 56px; padding: 112px 40px; border-top: 1px solid var(--line); }
+.install-section p { max-width: 54ch; color: var(--muted); font-size: 18px; line-height: 1.55; }
+.install-section code { align-self: end; overflow-wrap: anywhere; padding: 24px; border: 1px solid var(--line); font-size: 13px; line-height: 1.6; }
+footer { display: flex; justify-content: space-between; gap: 24px; padding: 28px 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+dialog { width: min(720px, calc(100% - 32px)); padding: 32px; border: 1px solid var(--foreground); background: var(--background); color: var(--foreground); }
+dialog::backdrop { background: rgba(23, 23, 23, 0.45); backdrop-filter: blur(4px); }
+.dialog-close { float: right; border: 0; background: transparent; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.dialog-meta { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+dialog h2 { max-width: 16ch; margin: 0; font-size: clamp(2.4rem, 7vw, 4.5rem); line-height: 0.95; letter-spacing: -0.055em; }
+#dialog-description { max-width: 52ch; margin: 24px 0 32px; color: var(--muted); line-height: 1.6; }
+.command-row { display: grid; grid-template-columns: 1fr auto; border: 1px solid var(--line); }
+.command-row code { overflow-x: auto; padding: 18px; white-space: nowrap; }
+.command-row button { border: 0; border-left: 1px solid var(--line); padding: 0 20px; background: var(--foreground); color: var(--background); cursor: pointer; }
+.dialog-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px; font-size: 14px; }
+
+@media (max-width: 900px) {
+  .site-header { padding-inline: 20px; }
+  .hero { grid-template-columns: 1fr; padding-inline: 20px; }
+  .monogram { display: none; }
+  .catalog-section, .install-section { padding: 80px 20px; }
+  .filters { grid-template-columns: 1fr; }
+  .filters label { border-right: 0; border-bottom: 1px solid var(--line); }
+  .filters label:last-child { border-bottom: 0; }
+  .catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .install-section { grid-template-columns: 1fr; }
+  footer { padding-inline: 20px; }
+}
+
+@media (max-width: 560px) {
+  .site-header nav a:last-child { display: none; }
+  .site-header nav { gap: 18px; }
+  .hero { min-height: 86svh; }
+  .section-heading { align-items: start; flex-direction: column; }
+  .catalog { grid-template-columns: 1fr; }
+  footer { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
